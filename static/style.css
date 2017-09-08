@@ -11,6 +11,10 @@ body {
   margin-right: 5px;
 }
 
+.btn.btn-disabled:hover {
+  cursor: default;
+}
+
 .navbar-text {
   color: white;
 }
