@@ -4,6 +4,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: #DAD2D8;
 }
 
 .navbar {
@@ -40,6 +41,6 @@ body {
 }
 
 #list-container {
-  background-color: grey;
+  
 
 }
