@@ -1,24 +1,59 @@
 var map;
+var infoWindow;
 var markers = [];
-
-var embed = "https://www.google.com/maps/embed/v1/place?key=AIzaSyBygxnA7fNhpEsVlPfPrHmkNgyWRo00LS4&q=world";
 
 function initMap() {
 
 }
 
-var embeddedMap = {
-  defaultMap: "static/default-map.jpg",
-  src: ""
+var currentLocation = {
+  lat: "",
+  lon: "",
+  address: "",
+  embeddedMapBase: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBygxnA7fNhpEsVlPfPrHmkNgyWRo00LS4&q="
+}
+
+//uses currentLocation object data to compose src for Google Api Map
+function setLocation() {
+
+  //hide default picture to be replaced with real map
+  $("#default-map").hide();
+
+  //determine whether to use lat/lon or address
+  if (currentLocation.lat != 0 && currentLocation.lon != 0) {
+    //update src attribute with correct location
+    $("#current-location").attr("src", currentLocation.embeddedMapBase +
+      currentLocation.lat + "," + currentLocation.lon);
+  }
+  else {
+    $("#current-location").attr("src", currentLocation.embeddedMapBase +
+      currentLocation.address);
+  }
+
+
 }
 
 var viewModel = function() {
   var self = this;
 
-  // this.location = ko.oberservable(embeddedMap);
+  this.getLocation = function() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+
+      currentLocation.lat = position.coords.latitude;
+      currentLocation.lon = position.coords.longitude;
+      setLocation();
+
+      });
+    } else {
+      // Browser doesn't support Geolocation
+
+    }
+  }
 
   this.setLocation = function() {
-    alert('hi');
+    currentLocation.address = $("#address").val();
+    setLocation();
   }
 }
 
