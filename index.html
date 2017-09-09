@@ -45,7 +45,7 @@
           <div class="form-group">
             <input id="address" type="text" class="form-control" placeholder="Enter your address ...">
           </div>
-          <button type="submit" class="btn btn-warning">Find me!</button>
+          <button type="submit" class="btn btn-warning" data-bind="click: setLocation">Find me!</button>
         </form>
       </div>
     </div>
@@ -65,7 +65,7 @@
       <iframe class="embed-responsive-item" src=""></iframe>
     </div>
 
-    <script defer src="js/lib/knockout-3.2.0.js"></script>
+    <script src="js/lib/knockout-3.2.0.js"></script>
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBygxnA7fNhpEsVlPfPrHmkNgyWRo00LS4&v=3&callback=initMap">
     </script>
