@@ -1,16 +1,19 @@
+var geocoder;
 var map;
 var infoWindow;
 var markers = [];
 
 function initMap() {
-
+  geocoder = new google.maps.Geocoder();
+  map = new google.maps.Map(document.getElementById('current-location-map'), {
+    center: {lat: 36.3875207, lng: -97.8941282},
+    zoom: 2
+  });
 }
 
 var currentLocation = {
   lat: "",
-  lon: "",
-  address: "",
-  embeddedMapBase: "https://www.google.com/maps/embed/v1/place?key=AIzaSyBygxnA7fNhpEsVlPfPrHmkNgyWRo00LS4&q="
+  lon: ""
 }
 
 var radiusOptions = [
@@ -23,21 +26,7 @@ var radiusOptions = [
 ]
 
 //uses currentLocation object data to compose src for Google Api Map
-function setLocation() {
-
-  //hide default picture to be replaced with real map
-  $("#default-map").hide();
-
-  //determine whether to use lat/lon or address
-  if (currentLocation.lat != 0 && currentLocation.lon != 0) {
-    //update src attribute with correct location
-    $("#current-location").attr("src", currentLocation.embeddedMapBase +
-      currentLocation.lat + "," + currentLocation.lon);
-  }
-  else {
-    $("#current-location").attr("src", currentLocation.embeddedMapBase +
-      currentLocation.address);
-  }
+function setLocationMap() {
 
 
 }
@@ -54,7 +43,7 @@ var viewModel = function() {
 
       currentLocation.lat = position.coords.latitude;
       currentLocation.lon = position.coords.longitude;
-      setLocation();
+      setLocationMap();
       });
 
     } else {
@@ -64,11 +53,25 @@ var viewModel = function() {
   }
 
   //Use input from user to set map location and map
-  this.setLocation = function() {
-    currentLocation.address = $("#address").val();
-    setLocation();
+  this.geocodeLocation = function() {
+    var address = $("#address").val();
+    geocoder.geocode( { 'address': address }, function(results, status) {
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
   }
 
+  this.findPizza = function() {
+    var radius = $("#radius").val();
+    $("#input-radius").hide();
+  }
 
 }
 

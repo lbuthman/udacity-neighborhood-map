@@ -45,7 +45,7 @@
           <div class="form-group">
             <input id="address" type="text" class="form-control" placeholder="Enter your address ...">
           </div>
-          <button data-bind="click: setLocation" type="submit" class="btn btn-warning">Find me!</button>
+          <button data-bind="click: geocodeLocation" type="submit" class="btn btn-warning">Find me!</button>
         </form>
       </div>
     </div>
@@ -54,27 +54,26 @@
   <div class="container">
 
     <div class="col-xs-12 col-sm-3" id="list-container">
-      <div class="form-group">
+      <div id="input-radius" class="form-group">
         <h3><label for="radius" class="label label-default">Search Radius in Miles:</label></h3>
         <select data-bind="foreach: radiusOptions" class="form-control" id="radius">
           <option data-bind="text: miles"></option>
         </select>
-        <button id="search-radius" class="btn btn-danger">Find Pizza!</button>
+        <button data-bind="click: findPizza" class="btn btn-danger">Find Pizza!</button>
         <hr>
       </div>
 
-      
+
     </div>
 
-    <div class="embed-responsive embed-responsive-16by9 col-xs-12 col-sm-9">
-      <iframe id="current-location" class="embed-responsive-item" src=""></iframe>
-      <img id="default-map" class="img-responsive" src="static/default-map.jpg" alt="Start by setting your location at the top.">
+    <div class="col-xs-12 col-sm-9">
+      <div id="current-location-map"></div>
     </div>
 
     <script src="js/lib/knockout-3.2.0.js"></script>
-    <!-- <script async defer
+    <script async defer
       src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBygxnA7fNhpEsVlPfPrHmkNgyWRo00LS4&v=3&callback=initMap">
-    </script> -->
+    </script>
     <script src="js/app.js"></script>
 
   </div>
