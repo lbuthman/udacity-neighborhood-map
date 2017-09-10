@@ -40,7 +40,8 @@ body {
   padding: 0 0 0 0;
 }
 
-#list-container {
-
-
+#list-container select {
+  max-width: 55px;
+  float: left;
+  margin-right: 5px;
 }
