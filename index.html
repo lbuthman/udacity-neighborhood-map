@@ -54,11 +54,15 @@
   <div class="container">
 
     <div class="col-xs-12 col-sm-3" id="list-container">
-      <ul>
-        <li>Hi</li>
-        <li>Hi</li>
-        <li>Hi</li>
-      </ul>
+
+      <div class="form-group">
+        <h3><label for="radius" class="label label-default">Search Radius in Miles:</label></h3>
+        <select data-bind="foreach: radiusOptions" class="form-control" id="radius">
+          <option data-bind="text: miles"></option>
+        </select>
+        <button id="search-radius" class="btn btn-default">Find Pizza!</button>
+        <hr>
+      </div>
     </div>
 
     <div class="embed-responsive embed-responsive-16by9 col-xs-12 col-sm-9">
