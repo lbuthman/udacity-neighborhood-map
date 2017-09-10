@@ -1,13 +1,32 @@
 var geocoder;
 var map;
+var latLng;
 var infoWindow;
 var markers = [];
 
 function initMap() {
   geocoder = new google.maps.Geocoder();
+  latLng = new google.maps.LatLng(33.8222611, -111.918203);
   map = new google.maps.Map(document.getElementById('current-location-map'), {
-    center: {lat: 36.3875207, lng: -97.8941282},
-    zoom: 2
+    center: latLng,
+    zoom: 13
+  });
+
+  var contentString = "<div>" +
+    "<h4>Set your location above to get started!</h4>" +
+    "<p>Either click 'Use My Current Location' to be found automatically<br>" +
+    "or type in your address and click Find Me<p>" +
+    "</div>";
+
+  var infoWindow = new google.maps.InfoWindow({ content: contentString });
+
+  var marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+  });
+
+  marker.addListener('click', function() {
+    infoWindow.open(map, marker);
   });
 }
 
@@ -41,9 +60,14 @@ var viewModel = function() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
 
-      currentLocation.lat = position.coords.latitude;
-      currentLocation.lon = position.coords.longitude;
-      setLocationMap();
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        var location = {lat: lat, lng: lng};
+        var marker = new google.maps.Marker({
+          position: location,
+          map: map,
+          title: 'There you are! Hi!!!'
+        });
       });
 
     } else {
@@ -60,7 +84,9 @@ var viewModel = function() {
         map.setCenter(results[0].geometry.location);
         var marker = new google.maps.Marker({
             map: map,
-            position: results[0].geometry.location
+            position: results[0].geometry.location,
+            title: 'There you are! Hi!!!',
+            visible: true
         });
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
