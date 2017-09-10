@@ -4,6 +4,7 @@ var latLng;
 var infoWindow;
 var markers = [];
 
+//called when page opens to initialize map and prompt use via infoWindow
 function initMap() {
   geocoder = new google.maps.Geocoder();
   latLng = new google.maps.LatLng(33.8222611, -111.918203);
@@ -28,11 +29,6 @@ function initMap() {
   marker.addListener('click', function() {
     infoWindow.open(map, marker);
   });
-}
-
-var currentLocation = {
-  lat: "",
-  lon: ""
 }
 
 var radiusOptions = [
