@@ -19,6 +19,19 @@ function initMap() {
     "or type in your address and click Find Me<p>" +
     "</div>";
 
+  setInfoWindow(contentString);
+}
+
+function setInfoWindow(contentString) {
+
+  if (contentString === "foundLocationInstructions") {
+    contentString = "<div>" +
+      "<h4>There you are! Hi!!</h4>" +
+      "<p>Now let's find you some pizza!!<br>" +
+      "Set the search radius to the left, then click 'Find Pizza!'<p>" +
+      "</div>";
+  }
+
   var infoWindow = new google.maps.InfoWindow({ content: contentString });
 
   var marker = new google.maps.Marker({
@@ -31,6 +44,7 @@ function initMap() {
   });
 }
 
+//current options for search distance, must be converted to kilometers
 var radiusOptions = [
   { miles: 3 },
   { miles: 5 },
@@ -39,12 +53,6 @@ var radiusOptions = [
   { miles: 15 },
   { miles: 20 }
 ]
-
-//uses currentLocation object data to compose src for Google Api Map
-function setLocationMap() {
-
-
-}
 
 var viewModel = function() {
   var self = this;
@@ -56,19 +64,18 @@ var viewModel = function() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
 
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        var location = {lat: lat, lng: lng};
-        var marker = new google.maps.Marker({
-          position: location,
-          map: map,
-          title: 'There you are! Hi!!!'
-        });
+        //store latitude longitude positions
+        latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+        //set user location and infowindow
+        map.setCenter(latLng);
+        setInfoWindow("foundLocationInstructions");
       });
 
     } else {
       // Browser doesn't support Geolocation
-
+      alert("Sorry, your browser does not support Geolocation. " +
+        "Please enter your address and click Find Me to get started.");
     }
   }
 
@@ -77,13 +84,12 @@ var viewModel = function() {
     var address = $("#address").val();
     geocoder.geocode( { 'address': address }, function(results, status) {
       if (status == 'OK') {
-        map.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location,
-            title: 'There you are! Hi!!!',
-            visible: true
-        });
+        //store latitude longitude positions
+        latLng = results[0].geometry.location
+
+        //set user location and infowindow
+        map.setCenter(latLng);
+        setInfoWindow("foundLocationInstructions");
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
