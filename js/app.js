@@ -20,7 +20,7 @@ function initMap() {
     "or type in your address and click Find Me<p>" +
     "</div>";
 
-  setInfoWindow(contentString);
+  setInfoWindow(contentString, google.maps.Animation.BOUNCE);
 
   var addressAutocomplete = new google.maps.places.Autocomplete(
     document.getElementById("address")
@@ -37,7 +37,7 @@ function setZoom(zoomNumber) {
   map.setZoom(zoomNumber);
 }
 
-function setInfoWindow(contentString) {
+function setInfoWindow(contentString, animate) {
 
   if (contentString === "findPizzaInstructions") {
     contentString = "<div>" +
@@ -52,7 +52,7 @@ function setInfoWindow(contentString) {
   var marker = new google.maps.Marker({
       position: latLng,
       map: map,
-      animation: google.maps.Animation.BOUNCE
+      animation: animate
   });
 
   marker.addListener('click', function() {
@@ -94,7 +94,7 @@ var viewModel = function() {
         //set user location and infowindow
         setLocation();
         setZoom(16);
-        setInfoWindow("findPizzaInstructions");
+        setInfoWindow("findPizzaInstructions", google.maps.Animation.BOUNCE);
       });
 
     } else {
@@ -115,7 +115,7 @@ var viewModel = function() {
         //set user location and infowindow
         setLocation();
         setZoom(16);
-        setInfoWindow("findPizzaInstructions");
+        setInfoWindow("findPizzaInstructions", google.maps.Animation.BOUNCE);
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
