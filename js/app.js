@@ -61,15 +61,7 @@ function setInfoWindow(contentString) {
   });
 }
 
-function foundPizzaCallback(results, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    for (var i=0; i< results.length; i++) {
-      console.log(results[i]);
-    }
-  }
-}
-
-//current options for search distance, must be converted to kilometers
+//current options for search distance, must be converted to meters
 var radiusOptions = [
   { miles: 3 },
   { miles: 5 },
@@ -79,10 +71,17 @@ var radiusOptions = [
   { miles: 20 }
 ]
 
+//object used to create pizza locations
+var PizzaLocation = function(data) {
+  this.location = ko.observable(data.geometry.location);
+
+}
+
 var viewModel = function() {
   var self = this;
 
   this.radiusOptions = ko.observableArray(radiusOptions);
+  this.pizzaLocations = ko.observableArray();
 
   //Use the browser's geolocation to find device's lat and lon, then set map
   this.getLocation = function() {
@@ -139,7 +138,16 @@ var viewModel = function() {
 
     //create service and pass response to callback function
     placesService = new google.maps.places.PlacesService(map);
-    placesService.textSearch(request, foundPizzaCallback);
+    placesService.textSearch(request, function(results, status) {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        for (var i=0; i< results.length; i++) {
+          console.log(results[i]);
+        }
+      }
+      else {
+        alert("Sorry, we couldn't find you pizza! Google responded with " + status);
+      }
+    });
   }
 
 }
