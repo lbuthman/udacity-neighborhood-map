@@ -3,6 +3,7 @@ var map;
 var latLng;
 var infoWindow;
 var markers = [];
+var METERS_TO_MILES = 1609.34;
 
 //called when page opens to initialize map and prompt use via infoWindow
 function initMap() {
@@ -60,6 +61,14 @@ function setInfoWindow(contentString) {
   });
 }
 
+function foundPizzaCallback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i=0; i< results.length; i++) {
+      console.log(results[i]);
+    }
+  }
+}
+
 //current options for search distance, must be converted to kilometers
 var radiusOptions = [
   { miles: 3 },
@@ -114,9 +123,23 @@ var viewModel = function() {
     });
   }
 
+  //search for pizza places in search radius
   this.findPizza = function() {
-    var radius = $("#radius").val();
-    $("#input-radius").hide();
+    //get search radius in miles and convert to Meters
+    var radius = $("#radius").val() * METERS_TO_MILES;
+
+    //$("#input-radius").hide();
+
+    //create a request at current location for pizza type
+    var request = {
+      location: latLng,
+      radius: radius,
+      query: 'pizza'
+    };
+
+    //create service and pass response to callback function
+    placesService = new google.maps.places.PlacesService(map);
+    placesService.textSearch(request, foundPizzaCallback);
   }
 
 }
