@@ -4,6 +4,8 @@ var latLng;
 var infoWindow;
 var markers = [];
 var METERS_TO_MILES = 1609.34;
+var FOURSQUARE_CLIENTID = "4YYYXARVHBCLER0HYWTICLQYO3X43JNFZFZMYIHZA2NKDOSH";
+var FOURSQUARE_CLIENTSECRET = "TMYXTG1MOMONBZHIIHZYWQX2NVBZCQT0BTP5EDXDHAAU0W03";
 
 //called when page opens to initialize map and prompt use via infoWindow
 function initMap() {
@@ -72,9 +74,13 @@ var radiusOptions = [
 ]
 
 //object used to create pizza locations
-var PizzaLocation = function(data) {
-  this.location = ko.observable(data.geometry.location);
-  this.name = ko.observable(data.name);
+var PizzaLocation = function(id, name, lat, lng, distance, url) {
+  this.id = ko.observable(id);
+  this.name = ko.observable(name);
+  this.lat = ko.observable(lat);
+  this.lng = ko.observable(lng);
+  this.distance = ko.observable(distance);
+  this.url = ko.observable(url);
 }
 
 var viewModel = function() {
@@ -130,28 +136,31 @@ var viewModel = function() {
     //clear array of found locations if existing
     self.pizzaLocations.removeAll();
 
-    //$("#input-radius").hide();
+    var searchUrl = "https://api.foursquare.com/v2/venues/search?" +
+      "ll=" + latLng.lat() + "," + latLng.lng() +
+      "&radius=" + radius +
+      "&query=" + 'pizza' +
+      "&client_id=" + FOURSQUARE_CLIENTID +
+      "&client_secret=" + FOURSQUARE_CLIENTSECRET +
+      "&v=20170911";
 
-    //create a request at current location for pizza type
-    var request = {
-      location: latLng,
-      radius: radius,
-      query: 'pizza'
-    };
-
-    //create service and pass response to callback function
-    placesService = new google.maps.places.PlacesService(map);
-    placesService.textSearch(request, function(results, status) {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i=0; i< results.length; i++) {
-
-          self.pizzaLocations.push(new PizzaLocation(results[i]));
-        }
+    $.get(searchUrl, function(data) {
+      var results = data.response.venues;
+      for (var i=0; i< results.length; i++) {
+        var id = results[i].id;
+        var name = results[i].name;
+        var lat = results[i].location.lat;
+        var lng = results[i].location.lng;
+        var distance = (results[i].location.distance / METERS_TO_MILES).toFixed(2);
+        var url = results[i].url;
+        self.pizzaLocations.push(new PizzaLocation(id, name, lat, lng, distance, url));
       }
-      else {
-        alert("Sorry, we couldn't find you pizza! Google responded with " + status);
-      }
+    })
+    .fail(function($xhr) {
+      var data = $xhr.responseJSON;
+      alert("Sorry, we couldn't find you pizza! FourSquare says " + data.meta.errorDetail);
     });
+    //$("#input-radius").hide();
   }
 
 }
