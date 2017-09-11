@@ -10,7 +10,7 @@ function initMap() {
   latLng = new google.maps.LatLng(33.8222611, -111.918203);
   map = new google.maps.Map(document.getElementById('current-location-map'), {
     center: latLng,
-    zoom: 13
+    zoom: 0
   });
 
   var contentString = "<div>" +
@@ -20,6 +20,20 @@ function initMap() {
     "</div>";
 
   setInfoWindow(contentString);
+
+  var addressAutocomplete = new google.maps.places.Autocomplete(
+    document.getElementById("address")
+  );
+}
+
+//update map with current lat lon position and zoom in
+function setLocation() {
+  map.setCenter(latLng);
+}
+
+//zoomNumber 0 - 18 -> zoomed out to zoomed in
+function setZoom(zoomNumber) {
+  map.setZoom(zoomNumber);
 }
 
 function setInfoWindow(contentString) {
@@ -37,9 +51,11 @@ function setInfoWindow(contentString) {
   var marker = new google.maps.Marker({
       position: latLng,
       map: map,
+      animation: google.maps.Animation.BOUNCE
   });
 
   marker.addListener('click', function() {
+    marker.setAnimation(null);
     infoWindow.open(map, marker);
   });
 }
@@ -68,7 +84,8 @@ var viewModel = function() {
         latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
         //set user location and infowindow
-        map.setCenter(latLng);
+        setLocation();
+        setZoom(16);
         setInfoWindow("foundLocationInstructions");
       });
 
@@ -88,7 +105,8 @@ var viewModel = function() {
         latLng = results[0].geometry.location
 
         //set user location and infowindow
-        map.setCenter(latLng);
+        setLocation();
+        setZoom(16);
         setInfoWindow("foundLocationInstructions");
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
