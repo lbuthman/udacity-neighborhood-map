@@ -74,7 +74,7 @@ var radiusOptions = [
 //object used to create pizza locations
 var PizzaLocation = function(data) {
   this.location = ko.observable(data.geometry.location);
-
+  this.name = ko.observable(data.name);
 }
 
 var viewModel = function() {
@@ -127,6 +127,9 @@ var viewModel = function() {
     //get search radius in miles and convert to Meters
     var radius = $("#radius").val() * METERS_TO_MILES;
 
+    //clear array of found locations if existing
+    self.pizzaLocations.removeAll();
+
     //$("#input-radius").hide();
 
     //create a request at current location for pizza type
@@ -141,7 +144,8 @@ var viewModel = function() {
     placesService.textSearch(request, function(results, status) {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i=0; i< results.length; i++) {
-          console.log(results[i]);
+
+          self.pizzaLocations.push(new PizzaLocation(results[i]));
         }
       }
       else {
