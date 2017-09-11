@@ -22,7 +22,8 @@ function initMap() {
     "or type in your address and click Find Me<p>" +
     "</div>";
 
-  setInfoWindow(contentString, google.maps.Animation.BOUNCE);
+  var infoWindow = makeInfoWindow(contentString);
+  makeMarker(infoWindow, google.maps.Animation.BOUNCE);
 
   var addressAutocomplete = new google.maps.places.Autocomplete(
     document.getElementById("address")
@@ -39,7 +40,8 @@ function setZoom(zoomNumber) {
   map.setZoom(zoomNumber);
 }
 
-function setInfoWindow(contentString, animate) {
+//uses pass string to create and return google info window
+function makeInfoWindow(contentString) {
 
   if (contentString === "findPizzaInstructions") {
     contentString = "<div>" +
@@ -49,8 +51,12 @@ function setInfoWindow(contentString, animate) {
       "</div>";
   }
 
-  var infoWindow = new google.maps.InfoWindow({ content: contentString });
+  return new google.maps.InfoWindow({ content: contentString });
 
+}
+
+//uses info window and animate style to create and return google marker
+function makeMarker(infoWindow, animate) {
   var marker = new google.maps.Marker({
       position: latLng,
       map: map,
@@ -61,6 +67,8 @@ function setInfoWindow(contentString, animate) {
     marker.setAnimation(null);
     infoWindow.open(map, marker);
   });
+
+  return marker;
 }
 
 //current options for search distance, must be converted to meters
@@ -100,7 +108,8 @@ var viewModel = function() {
         //set user location and infowindow
         setLocation();
         setZoom(16);
-        setInfoWindow("findPizzaInstructions", google.maps.Animation.BOUNCE);
+        var infowindow = makeInfoWindow("findPizzaInstructions");
+        makeMarker(infowindow, google.maps.Animation.BOUNCE);
       });
 
     } else {
@@ -121,7 +130,8 @@ var viewModel = function() {
         //set user location and infowindow
         setLocation();
         setZoom(16);
-        setInfoWindow("findPizzaInstructions", google.maps.Animation.BOUNCE);
+        var infowindow = makeInfoWindow("findPizzaInstructions");
+        makeMarker(infowindow, google.maps.Animation.BOUNCE);
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
