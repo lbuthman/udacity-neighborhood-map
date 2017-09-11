@@ -38,7 +38,7 @@ function setZoom(zoomNumber) {
 
 function setInfoWindow(contentString) {
 
-  if (contentString === "foundLocationInstructions") {
+  if (contentString === "findPizzaInstructions") {
     contentString = "<div>" +
       "<h4>There you are! Hi!!</h4>" +
       "<p>Now let's find you some pizza!!<br>" +
@@ -86,7 +86,7 @@ var viewModel = function() {
         //set user location and infowindow
         setLocation();
         setZoom(16);
-        setInfoWindow("foundLocationInstructions");
+        setInfoWindow("findPizzaInstructions");
       });
 
     } else {
@@ -107,7 +107,7 @@ var viewModel = function() {
         //set user location and infowindow
         setLocation();
         setZoom(16);
-        setInfoWindow("foundLocationInstructions");
+        setInfoWindow("findPizzaInstructions");
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
       }
