@@ -3,6 +3,9 @@ var map;
 var latLng;
 var infoWindow;
 var markers = [];
+var homeIcon = 'static/homeIcon.png';
+var pizzaIcon = 'static/pizzaIcon.png';
+
 var METERS_TO_MILES = 1609.34;
 var FOURSQUARE_CLIENTID = "4YYYXARVHBCLER0HYWTICLQYO3X43JNFZFZMYIHZA2NKDOSH";
 var FOURSQUARE_CLIENTSECRET = "TMYXTG1MOMONBZHIIHZYWQX2NVBZCQT0BTP5EDXDHAAU0W03";
@@ -65,12 +68,18 @@ function setZoom(radius) {
 }
 
 //uses info window and animate style to create and return google marker
-function makeMarker(infoWindow, contentString, animate) {
+//accepts optional icon for custom marker icon
+function makeMarker(infoWindow, contentString, animate, icon) {
+
   var marker = new google.maps.Marker({
       position: latLng,
       map: map,
       animation: animate
   });
+
+  if (icon) {
+    marker.setIcon(icon);
+  }
 
   marker.addListener('click', function() {
     marker.setAnimation(null);
@@ -138,7 +147,7 @@ var viewModel = function() {
           "Set the search radius to the left, then click 'Find Pizza!'<p>" +
           "</div>";
 
-        makeMarker(infoWindow, contentString, google.maps.Animation.BOUNCE);
+        makeMarker(infoWindow, contentString, google.maps.Animation.BOUNCE, homeIcon);
       });
 
     } else {
@@ -166,7 +175,7 @@ var viewModel = function() {
           "Set the search radius to the left, then click 'Find Pizza!'<p>" +
           "</div>";
 
-        makeMarker(infoWindow, contentString, google.maps.Animation.BOUNCE);
+        makeMarker(infoWindow, contentString, google.maps.Animation.BOUNCE, homeIcon);
       } else {
         alert("Dang, we couldn't find you because " + status);
       }
@@ -216,7 +225,7 @@ var viewModel = function() {
           "<p>" + url + "</p></div>";
 
         //add the marker and push to array
-        var marker = makeMarker(infoWindow, contentString, google.maps.Animation.DROP);
+        var marker = makeMarker(infoWindow, contentString, google.maps.Animation.DROP, pizzaIcon);
         markers.push(marker);
       }
     })
