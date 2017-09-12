@@ -65,7 +65,7 @@
 
       <div>
         <ul data-bind="foreach: pizzaLocations">
-          <li data-bind="text: name"></li>
+          <li><h5 data-bind="text: name, click: $parent.openMarker"></h5></li>
         </ul>
       </div>
 

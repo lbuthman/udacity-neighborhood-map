@@ -12,7 +12,7 @@ var FOURSQUARE_CLIENTSECRET = "TMYXTG1MOMONBZHIIHZYWQX2NVBZCQT0BTP5EDXDHAAU0W03"
 
 var ZOOM_OUT = 0; //represents fully zoomed out map, i.e. globe
 var ZOOM_IN = 16; //represents zoomed in to less than a mile view
-var BOUNCE_DURATION = 2130; //time in ms, each bounce 700ms, -> 3 bounces +30ms
+var BOUNCE_DURATION = 3530; //time in ms, each bounce 700ms, -> 5 bounces +30ms
 
 
 //called when page opens to initialize map and prompt use via infoWindow
@@ -100,7 +100,7 @@ function populateInfoWindow(marker, infoWindow, contentString) {
     infoWindow.setContent(contentString);
     // Make sure the marker property is cleared if the infoWindow is closed.
     infoWindow.addListener('closeclick',function(){
-      infoWindow.setMarker = null;
+    infoWindow.setMarker = null;
     });
   }
 }
@@ -116,11 +116,10 @@ var radiusOptions = [
 ]
 
 //object used to create pizza locations
-var PizzaLocation = function(id, name, lat, lng, distance, url) {
+var PizzaLocation = function(id, name, latLng, distance, url) {
   this.id = ko.observable(id);
   this.name = ko.observable(name);
-  this.lat = ko.observable(lat);
-  this.lng = ko.observable(lng);
+  this.latLng = ko.observable(latLng);
   this.distance = ko.observable(distance);
   this.url = ko.observable(url);
 }
@@ -211,7 +210,6 @@ var viewModel = function() {
         var lng = results[i].location.lng;
         var distance = (results[i].location.distance / METERS_TO_MILES).toFixed(2);
         var url = results[i].url;
-        self.pizzaLocations.push(new PizzaLocation(id, name, lat, lng, distance, url));
 
         latLng = new google.maps.LatLng(lat, lng);
 
@@ -228,7 +226,15 @@ var viewModel = function() {
 
         //add the marker and push to array
         var marker = makeMarker(infoWindow, contentString, google.maps.Animation.DROP, pizzaIcon);
-        markers.push(marker);
+        markers.push({
+          id: id,
+          marker: marker,
+          infoWindow: infoWindow,
+          contentString: contentString
+        });
+
+        //add item to observableArray
+        self.pizzaLocations.push(new PizzaLocation(id, name, latLng, distance, url));
       }
     })
     //catch error in response and notify user
@@ -237,6 +243,15 @@ var viewModel = function() {
       alert("Sorry, we couldn't find you pizza! FourSquare says " + data.meta.errorDetail);
     });
     //$("#input-radius").hide();
+  }
+
+  this.openMarker = function(data) {
+    for (var i=0; i<markers.length; i++) {
+      var marker = markers[i];
+      if (marker.id == data.id()) {
+        populateInfoWindow(marker.marker, marker.infoWindow, marker.contentString);
+      }
+    }
   }
 
 }
