@@ -10,9 +10,10 @@ var METERS_TO_MILES = 1609.34;
 var FOURSQUARE_CLIENTID = "4YYYXARVHBCLER0HYWTICLQYO3X43JNFZFZMYIHZA2NKDOSH";
 var FOURSQUARE_CLIENTSECRET = "TMYXTG1MOMONBZHIIHZYWQX2NVBZCQT0BTP5EDXDHAAU0W03";
 
-//zoom numbers
-var ZOOM_OUT = 0;
-var ZOOM_IN = 16;
+var ZOOM_OUT = 0; //represents fully zoomed out map, i.e. globe
+var ZOOM_IN = 16; //represents zoomed in to less than a mile view
+var BOUNCE_DURATION = 2130; //time in ms, each bounce 700ms, -> 3 bounces +30ms
+
 
 //called when page opens to initialize map and prompt use via infoWindow
 function initMap() {
@@ -85,6 +86,7 @@ function makeMarker(infoWindow, contentString, animate, icon) {
     marker.setAnimation(null);
     populateInfoWindow(this, infoWindow, contentString)
   });
+  setTimeout(function() { marker.setAnimation(null); }, BOUNCE_DURATION);
 
   return marker;
 }
