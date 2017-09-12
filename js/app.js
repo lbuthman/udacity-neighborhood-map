@@ -15,6 +15,7 @@ var ZOOM_IN = 16;
 function initMap() {
   geocoder = new google.maps.Geocoder();
   latLng = new google.maps.LatLng(33.8222611, -111.918203);
+  infoWindow = new google.maps.InfoWindow();
   map = new google.maps.Map(document.getElementById('current-location-map'), {
     center: latLng,
     zoom: ZOOM_OUT
@@ -26,8 +27,7 @@ function initMap() {
     "or type in your address and click Find Me<p>" +
     "</div>";
 
-  var infoWindow = makeInfoWindow(contentString);
-  makeMarker(infoWindow, google.maps.Animation.BOUNCE);
+  makeMarker(infoWindow, contentString, google.maps.Animation.BOUNCE);
 
   var addressAutocomplete = new google.maps.places.Autocomplete(
     document.getElementById("address")
@@ -64,23 +64,8 @@ function setZoom(radius) {
   }
 }
 
-//uses pass string to create and return google info window
-function makeInfoWindow(contentString) {
-
-  if (contentString === "findPizzaInstructions") {
-    contentString = "<div>" +
-      "<h4>There you are! Hi!!</h4>" +
-      "<p>Now let's find you some pizza!!<br>" +
-      "Set the search radius to the left, then click 'Find Pizza!'<p>" +
-      "</div>";
-  }
-
-  return new google.maps.InfoWindow({ content: contentString });
-
-}
-
 //uses info window and animate style to create and return google marker
-function makeMarker(infoWindow, animate) {
+function makeMarker(infoWindow, contentString, animate) {
   var marker = new google.maps.Marker({
       position: latLng,
       map: map,
@@ -89,10 +74,24 @@ function makeMarker(infoWindow, animate) {
 
   marker.addListener('click', function() {
     marker.setAnimation(null);
-    infoWindow.open(map, marker);
+    populateInfoWindow(this, infoWindow, contentString)
   });
 
   return marker;
+}
+
+//restrict map to use only one infoWindow for cleaner interface
+function populateInfoWindow(marker, infoWindow, contentString) {
+  // Check to make sure the infoWindow is not already opened on this marker.
+  if (infoWindow.marker != marker) {
+    infoWindow.marker = marker;
+    infoWindow.open(map, marker);
+    infoWindow.setContent(contentString);
+    // Make sure the marker property is cleared if the infoWindow is closed.
+    infoWindow.addListener('closeclick',function(){
+      infoWindow.setMarker = null;
+    });
+  }
 }
 
 //current options for search distance, must be converted to meters
@@ -129,11 +128,17 @@ var viewModel = function() {
         //store latitude longitude positions
         latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-        //set user location and infowindow
+        //set user location and marker
         setLocation();
         map.setZoom(ZOOM_IN);
-        var infowindow = makeInfoWindow("findPizzaInstructions");
-        makeMarker(infowindow, google.maps.Animation.BOUNCE);
+
+        var contentString = "<div>" +
+          "<h4>We found you! Hola!!</h4>" +
+          "<p>Now let's find you some pizza!!<br>" +
+          "Set the search radius to the left, then click 'Find Pizza!'<p>" +
+          "</div>";
+
+        makeMarker(infoWindow, contentString, google.maps.Animation.BOUNCE);
       });
 
     } else {
@@ -151,13 +156,19 @@ var viewModel = function() {
         //store latitude longitude positions
         latLng = results[0].geometry.location
 
-        //set user location and infowindow
+        //set user location and marker
         setLocation();
         map.setZoom(ZOOM_IN);
-        var infowindow = makeInfoWindow("findPizzaInstructions");
-        makeMarker(infowindow, google.maps.Animation.BOUNCE);
+
+        var contentString = "<div>" +
+          "<h4>There you are! Hi!!</h4>" +
+          "<p>Now let's find you some pizza!!<br>" +
+          "Set the search radius to the left, then click 'Find Pizza!'<p>" +
+          "</div>";
+
+        makeMarker(infoWindow, contentString, google.maps.Animation.BOUNCE);
       } else {
-        alert('Geocode was not successful for the following reason: ' + status);
+        alert("Dang, we couldn't find you because " + status);
       }
     });
   }
@@ -200,13 +211,12 @@ var viewModel = function() {
           url = "<a href=" + url + ">" + url + "</a>";
         }
 
-        var infowindow = makeInfoWindow("<div><h4>" + name + "</h4>" +
+        var contentString = "<div><h4>" + name + "</h4>" +
           "<p>" + distance + " miles away" + "<p>" +
-          "<p>" + url + "</p></div>"
-        );
+          "<p>" + url + "</p></div>";
 
         //add the marker and push to array
-        var marker = makeMarker(infowindow, google.maps.Animation.DROP);
+        var marker = makeMarker(infoWindow, contentString, google.maps.Animation.DROP);
         markers.push(marker);
       }
     })
