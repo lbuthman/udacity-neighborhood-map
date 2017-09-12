@@ -46,7 +46,23 @@ body {
 }
 
 #list-container select {
-  max-width: 55px;
+  min-width: 35px;
   float: left;
   margin-right: 5px;
+}
+
+#radius-input {
+  display: inline-flex;
+  vertical-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#radius-label {
+  margin-right: 5px;
+}
+
+hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

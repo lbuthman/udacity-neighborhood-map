@@ -53,15 +53,15 @@
 
   <div class="container">
 
-    <div class="col-xs-12 col-sm-3" id="list-container">
-      <div id="input-radius" class="form-group">
-        <h3><label for="radius" class="label label-default">Search Radius in Miles:</label></h3>
+    <div class="col-sm-4 col-lg-3" id="list-container">
+      <div id="radius-input" class="form-group">
+        <h4 id="radius-label"><label for="radius" class="label label-default">Search Mile Radius:</label></h4>
         <select data-bind="foreach: radiusOptions" class="form-control" id="radius">
           <option data-bind="text: miles"></option>
         </select>
-        <button data-bind="click: findPizza" class="btn btn-danger">Find Pizza!</button>
-        <hr>
+        <button data-bind="click: findPizza" class="btn btn-danger btn-xs">Find Pizza!</button>
       </div>
+      <hr>
 
       <div>
         <ul data-bind="foreach: pizzaLocations">
@@ -71,7 +71,7 @@
 
     </div>
 
-    <div class="col-xs-12 col-sm-9">
+    <div class="col-sm-8 col-lg-9">
       <div id="current-location-map"></div>
     </div>
 
