@@ -73,11 +73,11 @@ function makeMarker(infoWindow, animate) {
 
 //current options for search distance, must be converted to meters
 var radiusOptions = [
+  { miles: 1 },
+  { miles: 2 },
   { miles: 3 },
   { miles: 5 },
-  { miles: 7 },
   { miles: 10 },
-  { miles: 15 },
   { miles: 20 }
 ]
 
@@ -149,6 +149,7 @@ var viewModel = function() {
     var searchUrl = "https://api.foursquare.com/v2/venues/search?" +
       "ll=" + latLng.lat() + "," + latLng.lng() +
       "&radius=" + radius +
+      "&intent=" + 'browse' +
       "&query=" + 'pizza' +
       "&client_id=" + FOURSQUARE_CLIENTID +
       "&client_secret=" + FOURSQUARE_CLIENTSECRET +
@@ -164,6 +165,21 @@ var viewModel = function() {
         var distance = (results[i].location.distance / METERS_TO_MILES).toFixed(2);
         var url = results[i].url;
         self.pizzaLocations.push(new PizzaLocation(id, name, lat, lng, distance, url));
+
+        latLng = new google.maps.LatLng(lat, lng);
+
+        if (url == undefined) {
+          url = "In this day and age, they still don't have a website ... ugh.";
+        } else {
+          url = "<a href=" + url + ">" + url + "</a>";
+        }
+
+        var infowindow = makeInfoWindow("<div><h4>" + name + "</h4>" +
+          "<p>" + distance + " miles away" + "<p>" +
+          "<p>" + url + "</p></div>"
+        );
+        var marker = makeMarker(infowindow, google.maps.Animation.DROP);
+        markers.push(marker);
       }
     })
     .fail(function($xhr) {
