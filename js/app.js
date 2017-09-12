@@ -7,13 +7,17 @@ var METERS_TO_MILES = 1609.34;
 var FOURSQUARE_CLIENTID = "4YYYXARVHBCLER0HYWTICLQYO3X43JNFZFZMYIHZA2NKDOSH";
 var FOURSQUARE_CLIENTSECRET = "TMYXTG1MOMONBZHIIHZYWQX2NVBZCQT0BTP5EDXDHAAU0W03";
 
+//zoom numbers
+var ZOOM_OUT = 0;
+var ZOOM_IN = 16;
+
 //called when page opens to initialize map and prompt use via infoWindow
 function initMap() {
   geocoder = new google.maps.Geocoder();
   latLng = new google.maps.LatLng(33.8222611, -111.918203);
   map = new google.maps.Map(document.getElementById('current-location-map'), {
     center: latLng,
-    zoom: 0
+    zoom: ZOOM_OUT
   });
 
   var contentString = "<div>" +
@@ -36,8 +40,28 @@ function setLocation() {
 }
 
 //zoomNumber 0 - 18 -> zoomed out to zoomed in
-function setZoom(zoomNumber) {
-  map.setZoom(zoomNumber);
+function setZoom(radius) {
+  console.log(radius);
+  switch (radius) {
+    case "1":
+      console.log("radius");
+      map.setZoom(15);
+      break;
+    case "2":
+      map.setZoom(13);
+      break;
+    case "3":
+      map.setZoom(12);
+      break;
+    case "5":
+      map.setZoom(12);
+      break;
+    case "10":
+      map.setZoom(11);
+      break;
+    case "20":
+      map.setZoom(9);
+  }
 }
 
 //uses pass string to create and return google info window
@@ -107,7 +131,7 @@ var viewModel = function() {
 
         //set user location and infowindow
         setLocation();
-        setZoom(16);
+        map.setZoom(ZOOM_IN);
         var infowindow = makeInfoWindow("findPizzaInstructions");
         makeMarker(infowindow, google.maps.Animation.BOUNCE);
       });
@@ -129,7 +153,7 @@ var viewModel = function() {
 
         //set user location and infowindow
         setLocation();
-        setZoom(16);
+        map.setZoom(ZOOM_IN);
         var infowindow = makeInfoWindow("findPizzaInstructions");
         makeMarker(infowindow, google.maps.Animation.BOUNCE);
       } else {
@@ -142,6 +166,7 @@ var viewModel = function() {
   this.findPizza = function() {
     //get search radius in miles and convert to Meters
     var radius = $("#radius").val() * METERS_TO_MILES;
+    setZoom($("#radius").val());
 
     //clear array of found locations if existing
     self.pizzaLocations.removeAll();
@@ -168,6 +193,7 @@ var viewModel = function() {
 
         latLng = new google.maps.LatLng(lat, lng);
 
+        //set the url string for infoWindow
         if (url == undefined) {
           url = "In this day and age, they still don't have a website ... ugh.";
         } else {
@@ -178,10 +204,13 @@ var viewModel = function() {
           "<p>" + distance + " miles away" + "<p>" +
           "<p>" + url + "</p></div>"
         );
+
+        //add the marker and push to array
         var marker = makeMarker(infowindow, google.maps.Animation.DROP);
         markers.push(marker);
       }
     })
+    //catch error in response and notify user
     .fail(function($xhr) {
       var data = $xhr.responseJSON;
       alert("Sorry, we couldn't find you pizza! FourSquare says " + data.meta.errorDetail);
