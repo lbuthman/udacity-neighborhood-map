@@ -125,6 +125,7 @@ var PizzaLocation = function(id, name, latLng, distance, url, visible) {
   this.isVisible = ko.observable(visible);
 }
 
+//view model for knockout JS
 var viewModel = function() {
   var self = this;
 
@@ -244,7 +245,6 @@ var viewModel = function() {
       var data = $xhr.responseJSON;
       alert("Sorry, we couldn't find you pizza! FourSquare says " + data.meta.errorDetail);
     });
-    //$("#input-radius").hide();
   }
 
   //open marker infoWindow when list item clicked
@@ -281,5 +281,6 @@ var viewModel = function() {
 ko.applyBindings(new viewModel());
 
 window.onerror = function(message, url, line) {
-  alert("Uh oh! Random error! Make sure you are connected to the Internet.");
+  alert("Uh oh! Random error! Make sure you are connected to the Internet." +
+    "Or check with your system admin to see if they are blocking FourSquare or Google Maps.");
 }
