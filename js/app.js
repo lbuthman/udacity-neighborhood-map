@@ -96,6 +96,8 @@ function populateInfoWindow(marker, infoWindow, contentString) {
     infoWindow.marker = marker;
     infoWindow.open(map, marker);
     infoWindow.setContent(contentString);
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function() { marker.setAnimation(null); }, BOUNCE_DURATION);
     // Make sure the marker property is cleared if the infoWindow is closed.
     infoWindow.addListener('closeclick',function(){
     infoWindow.setMarker = null;
