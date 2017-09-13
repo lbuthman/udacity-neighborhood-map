@@ -279,3 +279,7 @@ var viewModel = function() {
 }
 
 ko.applyBindings(new viewModel());
+
+window.onerror = function(message, url, line) {
+  alert("Uh oh! Random error! Make sure you are connected to the Internet.");
+}
