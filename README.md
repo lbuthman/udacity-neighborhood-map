@@ -12,11 +12,11 @@ file and open it in your favorite web browser.
 
 2. Once the website is up, go ahead and set your location. You can do this
 automatically by clicking the "Use My Current Location" button at the top, or
-you can look an address in the search box and then click "Find Me!".
+you can look up an address in the search box and then click "Find Me!".
 
 3. You have been found, nice going! Now we can find some pizza places near you.
-Set the search radius in miles to the left and then click "Find Pizza!" and
-watch them markers rain from the virtual sky.
+Set the search radius to the left and then click "Find Pizza!" and watch them
+markers rain from the virtual sky.
 
 4. There you go! Go forth and explore. Click on a marker to find more info about
 the found location. If they have a website, we will include the link but not
@@ -26,19 +26,9 @@ all places are that "up-with-the-times".
 back flip if you found an awesome new place. (Be careful though, back flips
 are dangerous.)
 
-## Navigating the Website
-
-Now it's time to have some fun!
-
-You don't have to be logged in to see everything, but you do need to be logged
-in to add, edit or delete exercises. Do keep in mind that you can only edit and
-delete exercises that you have created. To sign-in, you will need a <a href="https://www.facebook.com/r.php">Facebook</a> or <a href="https://accounts.google.com/SignUp?hl=en">Google account</a>. If you don't
-have one already, don't worry, they are easy to sign up for. Just click on their
-links and follow the steps.
-
 ## Thank Yous, Shout Outs, and Salutations
 
-Google Maps API for powering the map and location finder
-FourSquare API for providing details on local pizza places
-KnockoutJS for easy handling of everything you see on the site!
+Google Maps API for powering the map and location finder<br>
+FourSquare API for providing details on local pizza places<br>
+KnockoutJS for easy handling of everything you see on the site!<br>
 Udacity for guidance and awesome education
