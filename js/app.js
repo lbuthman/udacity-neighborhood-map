@@ -82,7 +82,7 @@ function makeMarker(infoWindow, contentString, animate, icon) {
 
   marker.addListener('click', function() {
     marker.setAnimation(null);
-    populateInfoWindow(this, infoWindow, contentString)
+    populateInfoWindow(this, infoWindow, contentString);
   });
   setTimeout(function() { marker.setAnimation(null); }, BOUNCE_DURATION);
 
@@ -113,7 +113,7 @@ var radiusOptions = [
   { miles: 5 },
   { miles: 10 },
   { miles: 20 }
-]
+];
 
 //object used to create pizza locations
 var PizzaLocation = function(id, name, latLng, distance, url, visible) {
@@ -123,7 +123,7 @@ var PizzaLocation = function(id, name, latLng, distance, url, visible) {
   this.distance = ko.observable(distance);
   this.url = ko.observable(url);
   this.isVisible = ko.observable(visible);
-}
+};
 
 //view model for knockout JS
 var viewModel = function() {
@@ -158,7 +158,7 @@ var viewModel = function() {
       alert("Sorry, your browser does not support Geolocation. " +
         "Please enter your address and click Find Me to get started.");
     }
-  }
+  };
 
   //Use input from user to set map location and map
   this.geocodeLocation = function() {
@@ -166,7 +166,7 @@ var viewModel = function() {
     geocoder.geocode( { 'address': address }, function(results, status) {
       if (status == 'OK') {
         //store latitude longitude positions
-        latLng = results[0].geometry.location
+        latLng = results[0].geometry.location;
 
         //set user location and marker
         setLocation();
@@ -183,7 +183,7 @@ var viewModel = function() {
         alert("Dang, we couldn't find you because " + status);
       }
     });
-  }
+  };
 
   //search for pizza places in search radius
   this.findPizza = function() {
@@ -217,7 +217,7 @@ var viewModel = function() {
         latLng = new google.maps.LatLng(lat, lng);
 
         //set the url string for infoWindow
-        if (url == undefined) {
+        if (url === undefined) {
           url = "In this day and age, they still don't have a website ... ugh.";
         } else {
           url = "<a href=" + url + ">" + url + "</a>";
@@ -245,7 +245,7 @@ var viewModel = function() {
       var data = $xhr.responseJSON;
       alert("Sorry, we couldn't find you pizza! FourSquare says " + data.meta.errorDetail);
     });
-  }
+  };
 
   //open marker infoWindow when list item clicked
   this.openMarker = function(data) {
@@ -255,10 +255,10 @@ var viewModel = function() {
         populateInfoWindow(marker.marker, marker.infoWindow, marker.contentString);
       }
     }
-  }
+  };
 
   this.filterPizza = function() {
-    if (markers == 0) {
+    if (markers === 0) {
       alert("Dude, you gotta find some pizza places first! Hit Find Pizza and then try me again.");
       return;
     }
@@ -274,13 +274,13 @@ var viewModel = function() {
         location.isVisible(false);
       }
     }
-  }
+  };
 
-}
+};
 
 ko.applyBindings(new viewModel());
 
 window.onerror = function(message, url, line) {
   alert("Uh oh! Random error! Make sure you are connected to the Internet." +
     "Or check with your system admin to see if they are blocking FourSquare or Google Maps.");
-}
+};
