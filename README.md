@@ -6,7 +6,7 @@ your search. Let's get started!
 
 ## Getting Started
 
-1. Fork or download the project files in this repository. Once downloaded,
+1. Clone or download the project files in this repository. Once downloaded,
 you will have everything you need to launch the site. Just find the "index.html"
 file and open it in your favorite web browser.
 
