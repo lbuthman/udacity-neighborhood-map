@@ -45,10 +45,8 @@ function setLocation() {
 
 //zoomNumber 0 - 18 -> zoomed out to zoomed in
 function setZoom(radius) {
-  console.log(radius);
   switch (radius) {
     case "1":
-      console.log("radius");
       map.setZoom(15);
       break;
     case "2":
@@ -116,12 +114,13 @@ var radiusOptions = [
 ]
 
 //object used to create pizza locations
-var PizzaLocation = function(id, name, latLng, distance, url) {
+var PizzaLocation = function(id, name, latLng, distance, url, visible) {
   this.id = ko.observable(id);
   this.name = ko.observable(name);
   this.latLng = ko.observable(latLng);
   this.distance = ko.observable(distance);
   this.url = ko.observable(url);
+  this.isVisible = ko.observable(visible);
 }
 
 var viewModel = function() {
@@ -210,6 +209,7 @@ var viewModel = function() {
         var lng = results[i].location.lng;
         var distance = (results[i].location.distance / METERS_TO_MILES).toFixed(2);
         var url = results[i].url;
+        var isVisible = true;
 
         latLng = new google.maps.LatLng(lat, lng);
 
@@ -234,7 +234,7 @@ var viewModel = function() {
         });
 
         //add item to observableArray
-        self.pizzaLocations.push(new PizzaLocation(id, name, latLng, distance, url));
+        self.pizzaLocations.push(new PizzaLocation(id, name, latLng, distance, url, isVisible));
       }
     })
     //catch error in response and notify user
@@ -245,11 +245,31 @@ var viewModel = function() {
     //$("#input-radius").hide();
   }
 
+  //open marker infoWindow when list item clicked
   this.openMarker = function(data) {
     for (var i=0; i<markers.length; i++) {
       var marker = markers[i];
       if (marker.id == data.id()) {
         populateInfoWindow(marker.marker, marker.infoWindow, marker.contentString);
+      }
+    }
+  }
+
+  this.filterPizza = function() {
+    if (markers == 0) {
+      alert("Dude, you gotta find some pizza places first! Hit Find Pizza and then try me again.");
+      return;
+    }
+
+    var filterText = $("#filter-pizza").val().toUpperCase();
+
+    for (var i=0; i<self.pizzaLocations().length; i++) {
+      var location = self.pizzaLocations()[i];
+      if (location.name().toUpperCase().indexOf(filterText) > -1) {
+        location.isVisible(true);
+      }
+      else {
+        location.isVisible(false);
       }
     }
   }

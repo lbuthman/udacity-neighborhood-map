@@ -54,20 +54,26 @@
   <div class="container">
 
     <div class="col-sm-4 col-lg-3" id="list-container">
-      <div id="radius-input" class="form-group">
+      <section id="radius-input" class="form-group">
         <h4 id="radius-label"><label for="radius" class="label label-default">Search Mile Radius:</label></h4>
         <select data-bind="foreach: radiusOptions" class="form-control" id="radius">
           <option data-bind="text: miles"></option>
         </select>
         <button data-bind="click: findPizza" class="btn btn-danger btn-xs">Find Pizza!</button>
-      </div>
+      </section>
       <hr>
 
-      <div>
-        <ul data-bind="foreach: pizzaLocations">
-          <li><h5 data-bind="text: name, click: $parent.openMarker"></h5></li>
-        </ul>
-      </div>
+      <section>
+        <div class="form-group">
+          <input class="form-control" id="filter-pizza" placeholder="filter by name ...">
+          <button data-bind="click: filterPizza" class="btn btn-default">Filter</button>
+        </div>
+        <div>
+          <ul data-bind="foreach: pizzaLocations">
+            <h5 class="locations" data-bind="visible: isVisible, text: name, click: $parent.openMarker"></h5>
+          </ul>
+        </div>
+      </section>
 
     </div>
 
