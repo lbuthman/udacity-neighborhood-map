@@ -141,6 +141,7 @@ var ViewModel = function() {
   var self = this;
 
   this.radiusOptions = ko.observableArray(radiusOptions);
+  this.selectedRadius = ko.observable();
   this.pizzaLocations = ko.observableArray();
 
   //Use the browser's geolocation to find device's lat and lon, then set map
@@ -199,8 +200,8 @@ var ViewModel = function() {
   //search for pizza places in search radius
   this.findPizza = function() {
     //get search radius in miles and convert to Meters
-    var radius = $("#radius").val() * METERS_TO_MILES;
-    setZoom($("#radius").val());
+    var radius = self.selectedRadius() * METERS_TO_MILES;
+    setZoom(radius);
 
     //clear array of found locations
     self.pizzaLocations.removeAll();
@@ -301,7 +302,7 @@ function initViewModel() {
 }
 
 //catch all other errors
-function windowError(message, url, line) {
+function windowError() {
   alert("Uh oh! Random error!" +
     "Check with your system admin to see if they are blocking FourSquare or Google Maps.");
 };
