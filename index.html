@@ -35,7 +35,7 @@
           <button data-bind="click: getLocation" type="submit" class="btn btn-info">Use My Current Location</button>
           <button class="btn btn-default btn-disabled" disabled="disabled">... OR ...</button>
           <div class="form-group">
-            <input id="address" type="text" class="form-control" placeholder="Enter your address ...">
+            <input data-bind="textInput: address" id="address" type="text" class="form-control" placeholder="Enter your address ...">
           </div>
           <button data-bind="click: geocodeLocation" type="submit" class="btn btn-warning">Find me!</button>
         </form>

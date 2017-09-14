@@ -33,9 +33,11 @@ function initMap() {
 
   makeMarker(infoWindow, contentString, google.maps.Animation.BOUNCE);
 
-  var addressAutocomplete = new google.maps.places.Autocomplete(
-    document.getElementById("address")
-  );
+  //disabled to avoid misleading user. Currently the autofill feature will not
+  //work with Knockout https://github.com/knockout/knockout/issues/648
+  // var addressAutocomplete = new google.maps.places.Autocomplete(
+  //   document.getElementById("address")
+  // );
 
   initViewModel();
 }
@@ -142,6 +144,7 @@ var ViewModel = function() {
 
   this.radiusOptions = ko.observableArray(radiusOptions);
   this.selectedRadius = ko.observable();
+  this.address = ko.observable();
   this.pizzaLocations = ko.observableArray();
 
   //Use the browser's geolocation to find device's lat and lon, then set map
@@ -174,7 +177,11 @@ var ViewModel = function() {
 
   //Use input from user to set map location and map
   this.geocodeLocation = function() {
-    var address = $("#address").val();
+    //to meet project requirements, JQuery is not being used. However, there is
+    //an issue with most browsers and Knockout in regards to autofill. Here
+    //is the link with discussion: https://github.com/knockout/knockout/issues/648
+    // var address = $("#address").val();
+    var address = self.address().val();
     geocoder.geocode( { 'address': address }, function(results, status) {
       if (status == 'OK') {
         //store latitude longitude positions
@@ -201,7 +208,7 @@ var ViewModel = function() {
   this.findPizza = function() {
     //get search radius in miles and convert to Meters
     var radius = self.selectedRadius() * METERS_TO_MILES;
-    setZoom(radius);
+    setZoom(self.selectedRadius());
 
     //clear array of found locations
     self.pizzaLocations.removeAll();
