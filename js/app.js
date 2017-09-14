@@ -129,7 +129,7 @@ var PizzaLocation = function(id, name, latLng, distance, url, visible) {
 };
 
 //view model for knockout JS
-var viewModel = function() {
+var ViewModel = function() {
   var self = this;
 
   this.radiusOptions = ko.observableArray(radiusOptions);
@@ -284,7 +284,7 @@ var viewModel = function() {
 
 //initialize new view model and call function to find nearby pizza places
 function initViewModel() {
-  var vm = new viewModel();
+  var vm = new ViewModel();
   ko.applyBindings(vm);
   vm.findPizza();
 }
