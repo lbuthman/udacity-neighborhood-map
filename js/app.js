@@ -84,6 +84,7 @@ function makeMarker(infoWindow, contentString, animate, icon) {
 
   marker.addListener('click', function() {
     marker.setAnimation(null);
+    // map.panTo(marker.getPosition());
     populateInfoWindow(this, infoWindow, contentString);
   });
   setTimeout(function() { marker.setAnimation(null); }, BOUNCE_DURATION);
