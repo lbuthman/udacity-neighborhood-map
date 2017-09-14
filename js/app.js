@@ -10,7 +10,7 @@ var METERS_TO_MILES = 1609.34;
 var FOURSQUARE_CLIENTID = "4YYYXARVHBCLER0HYWTICLQYO3X43JNFZFZMYIHZA2NKDOSH";
 var FOURSQUARE_CLIENTSECRET = "TMYXTG1MOMONBZHIIHZYWQX2NVBZCQT0BTP5EDXDHAAU0W03";
 
-var ZOOM_OUT = 0; //represents fully zoomed out map, i.e. globe
+// var ZOOM_OUT = 0; //represents fully zoomed out map, i.e. globe
 var ZOOM_IN = 15; //represents zoomed in to less than a mile view
 var BOUNCE_DURATION = 3530; //time in ms, each bounce 700ms, -> 5 bounces +30ms
 
@@ -145,7 +145,6 @@ var viewModel = function() {
         //set user location and marker
         setLocation();
         map.setZoom(ZOOM_IN);
-        console.log(latLng.lat() + " - " + latLng.lng());
 
         var contentString = "<div>" +
           "<h4>We found you! Hola!!</h4>" +
