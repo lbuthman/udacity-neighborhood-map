@@ -262,9 +262,9 @@ var ViewModel = function() {
       }
     })
     //catch error in response and notify user
-    .fail(function($xhr) {
-      var data = $xhr.responseJSON;
-      alert("Sorry, we couldn't find you pizza! FourSquare says " + data.meta.errorDetail);
+    .fail(function() {
+      alert("Sorry, we couldn't find you pizza! FourSquare is experiencing issues. Please try again later. " +
+        "If the problem persists, ask your System Administrator if they are blocking FourSquare.");
     });
   };
 
