@@ -145,6 +145,7 @@ var ViewModel = function() {
   this.radiusOptions = ko.observableArray(radiusOptions);
   this.selectedRadius = ko.observable();
   this.address = ko.observable();
+  this.filterKeyword = ko.observable("");
   this.pizzaLocations = ko.observableArray();
 
   //Use the browser's geolocation to find device's lat and lon, then set map
