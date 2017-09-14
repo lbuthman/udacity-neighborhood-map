@@ -108,6 +108,14 @@ function populateInfoWindow(marker, infoWindow, contentString) {
   }
 }
 
+//delete all markers from map and clear array
+function deleteMarkersArray() {
+  for (var i=0; i<markers.length; i++) {
+    markers[i].marker.setMap(null);
+  }
+  markers = [];
+}
+
 //current options for search distance, must be converted to meters
 var radiusOptions = [
   { miles: 1 },
@@ -194,8 +202,9 @@ var ViewModel = function() {
     var radius = $("#radius").val() * METERS_TO_MILES;
     setZoom($("#radius").val());
 
-    //clear array of found locations if existing
+    //clear array of found locations
     self.pizzaLocations.removeAll();
+    deleteMarkersArray();
 
     var searchUrl = "https://api.foursquare.com/v2/venues/search?" +
       "ll=" + latLng.lat() + "," + latLng.lng() +
@@ -273,9 +282,11 @@ var ViewModel = function() {
       var location = self.pizzaLocations()[i];
       if (location.name().toUpperCase().indexOf(filterText) > -1) {
         location.isVisible(true);
+        markers[i].marker.setVisible(true);
       }
       else {
         location.isVisible(false);
+        markers[i].marker.setVisible(false);
       }
     }
   };
