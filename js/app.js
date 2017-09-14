@@ -182,7 +182,7 @@ var ViewModel = function() {
     //an issue with most browsers and Knockout in regards to autofill. Here
     //is the link with discussion: https://github.com/knockout/knockout/issues/648
     // var address = $("#address").val();
-    var address = self.address().val();
+    var address = self.address();
     geocoder.geocode( { 'address': address }, function(results, status) {
       if (status == 'OK') {
         //store latitude longitude positions
