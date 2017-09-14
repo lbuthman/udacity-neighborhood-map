@@ -55,7 +55,7 @@
       <section id="radius-input" class="form-group">
         <h4 id="radius-label"><label for="radius" class="label label-default">Search Mile Radius:</label></h4>
         <select data-bind="foreach: radiusOptions" class="form-control" id="radius">
-          <option data-bind="text: miles"></option>
+          <option label="" data-bind="text: miles"></option>
         </select>
         <button data-bind="click: findPizza" class="btn btn-danger btn-xs">Find Pizza!</button>
       </section>
@@ -68,7 +68,7 @@
         </div>
         <div>
           <ul data-bind="foreach: pizzaLocations">
-            <h5 class="locations" data-bind="visible: isVisible, text: name, click: $parent.openMarker"></h5>
+            <li class="locations" data-bind="visible: isVisible, text: name, click: $parent.openMarker"></li>
           </ul>
         </div>
       </section>

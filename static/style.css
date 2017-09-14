@@ -71,9 +71,13 @@ ul {
   padding-left: 10px;
 }
 
+li {
+  font-size: 20px;
+}
+
 .locations {
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   color: #d9534f;
   font-weight: 600;
 }
