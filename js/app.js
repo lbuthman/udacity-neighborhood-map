@@ -120,11 +120,11 @@ var radiusOptions = [
 
 //object used to create pizza locations
 var PizzaLocation = function(id, name, latLng, distance, url, visible) {
-  this.id = ko.observable(id);
+  this.id = id;
   this.name = ko.observable(name);
-  this.latLng = ko.observable(latLng);
-  this.distance = ko.observable(distance);
-  this.url = ko.observable(url);
+  this.latLng = latLng;
+  this.distance = distance;
+  this.url = url;
   this.isVisible = ko.observable(visible);
 };
 
@@ -254,7 +254,7 @@ var viewModel = function() {
   this.openMarker = function(data) {
     for (var i=0; i<markers.length; i++) {
       var marker = markers[i];
-      if (marker.id == data.id()) {
+      if (marker.id == data.id) {
         populateInfoWindow(marker.marker, marker.infoWindow, marker.contentString);
       }
     }
