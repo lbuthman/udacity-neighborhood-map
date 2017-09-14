@@ -301,7 +301,7 @@ function initViewModel() {
 }
 
 //catch all other errors
-window.onerror = function(message, url, line) {
-  alert("Uh oh! Random error! Make sure you are connected to the Internet." +
-    "Or check with your system admin to see if they are blocking FourSquare or Google Maps.");
+function windowError(message, url, line) {
+  alert("Uh oh! Random error!" +
+    "Check with your system admin to see if they are blocking FourSquare or Google Maps.");
 };
