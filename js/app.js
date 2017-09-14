@@ -313,4 +313,4 @@ function initViewModel() {
 function windowError() {
   alert("Uh oh! Random error!" +
     "Check with your system admin to see if they are blocking FourSquare or Google Maps.");
-};
+}
