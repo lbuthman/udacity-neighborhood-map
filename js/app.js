@@ -11,18 +11,18 @@ var FOURSQUARE_CLIENTID = "4YYYXARVHBCLER0HYWTICLQYO3X43JNFZFZMYIHZA2NKDOSH";
 var FOURSQUARE_CLIENTSECRET = "TMYXTG1MOMONBZHIIHZYWQX2NVBZCQT0BTP5EDXDHAAU0W03";
 
 var ZOOM_OUT = 0; //represents fully zoomed out map, i.e. globe
-var ZOOM_IN = 16; //represents zoomed in to less than a mile view
+var ZOOM_IN = 15; //represents zoomed in to less than a mile view
 var BOUNCE_DURATION = 3530; //time in ms, each bounce 700ms, -> 5 bounces +30ms
 
 
 //called when page opens to initialize map and prompt use via infoWindow
 function initMap() {
   geocoder = new google.maps.Geocoder();
-  latLng = new google.maps.LatLng(33.8222611, -111.918203);
+  latLng = new google.maps.LatLng(32.9290326, -96.8253039);
   infoWindow = new google.maps.InfoWindow();
   map = new google.maps.Map(document.getElementById('current-location-map'), {
     center: latLng,
-    zoom: ZOOM_OUT
+    zoom: ZOOM_IN
   });
 
   var contentString = "<div>" +
@@ -36,6 +36,8 @@ function initMap() {
   var addressAutocomplete = new google.maps.places.Autocomplete(
     document.getElementById("address")
   );
+
+  initViewModel();
 }
 
 //update map with current lat lon position and zoom in
@@ -143,6 +145,7 @@ var viewModel = function() {
         //set user location and marker
         setLocation();
         map.setZoom(ZOOM_IN);
+        console.log(latLng.lat() + " - " + latLng.lng());
 
         var contentString = "<div>" +
           "<h4>We found you! Hola!!</h4>" +
@@ -257,6 +260,7 @@ var viewModel = function() {
     }
   };
 
+  //use text filter for found pizza places
   this.filterPizza = function() {
     if (markers === 0) {
       alert("Dude, you gotta find some pizza places first! Hit Find Pizza and then try me again.");
@@ -278,8 +282,14 @@ var viewModel = function() {
 
 };
 
-ko.applyBindings(new viewModel());
+//initialize new view model and call function to find nearby pizza places
+function initViewModel() {
+  var vm = new viewModel();
+  ko.applyBindings(vm);
+  vm.findPizza();
+}
 
+//catch all other errors
 window.onerror = function(message, url, line) {
   alert("Uh oh! Random error! Make sure you are connected to the Internet." +
     "Or check with your system admin to see if they are blocking FourSquare or Google Maps.");
