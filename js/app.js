@@ -145,7 +145,7 @@ var ViewModel = function() {
   this.radiusOptions = ko.observableArray(radiusOptions);
   this.selectedRadius = ko.observable();
   this.address = ko.observable();
-  this.filterKeyword = ko.observable("");
+  this.filterKeyword = ko.observable();
   this.pizzaLocations = ko.observableArray();
 
   //Use the browser's geolocation to find device's lat and lon, then set map
@@ -285,7 +285,7 @@ var ViewModel = function() {
       return;
     }
 
-    var filterText = $("#filter-pizza").val().toUpperCase();
+    var filterText = self.filterKeyword().toUpperCase();
 
     for (var i=0; i<self.pizzaLocations().length; i++) {
       var location = self.pizzaLocations()[i];
