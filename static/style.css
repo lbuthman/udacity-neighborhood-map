@@ -83,6 +83,9 @@ li {
 }
 
 .footer {
+  /*https://developer.mozilla.org/en-US/docs/Web/CSS/position
+  https://benfrain.com/position-sticky-is-back-but-it-has-issues/
+  Note: sticky is a position. */
     position: sticky;
     bottom: 0;
     width: 100%;
